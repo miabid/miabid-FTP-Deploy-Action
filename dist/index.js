@@ -3053,6 +3053,7 @@ class HashDiff {
         let sizeUpload = 0;
         let sizeDelete = 0;
         let sizeReplace = 0;
+        const skipDeleteOnServer = true;
         // alphabetize each list based off path
         const localFilesSorted = localFiles.data.sort((first, second) => first.name.localeCompare(second.name));
         const serverFilesSorted = serverFiles.data.sort((first, second) => first.name.localeCompare(second.name));
@@ -3077,8 +3078,10 @@ class HashDiff {
                 localPosition += 1;
             }
             else if (fileNameCompare > 0) {
-                deleteList.push(serverFile);
-                sizeDelete += (_b = serverFile.size) !== null && _b !== void 0 ? _b : 0;
+                if (!skipDeleteOnServer) {
+                  deleteList.push(serverFile);
+                  sizeDelete += (_b = serverFile.size) !== null && _b !== void 0 ? _b : 0;
+                }
                 serverPosition += 1;
             }
             else if (fileNameCompare === 0) {
